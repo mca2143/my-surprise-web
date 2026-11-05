@@ -1,24 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Special Surprise</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Canvas-confetti library for interactive celebrations -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio / Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #1f293d;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            max-width: 500px;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.6rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #334155;
+        }
+
+        .btn-secondary:hover {
+            border-color: #60a5fa;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid #1f293d;
+        }
+    </style>
 </head>
 <body>
-  <div class="card" id="card">
-    <div class="icon">🎁</div>
-    <h1 id="headline">Click to Open</h1>
-    <p id="subtext">A quick note just for you...</p>
-    <button id="action-btn">Open Surprise</button>
-  </div>
 
-  <!-- Background sound -->
-  <audio id="bg-sound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" preload="auto"></audio>
+    <header>
+        <div class="logo">MyWeb</div>
+    </header>
 
-  <script src="script.js"></script>
+    <main class="hero">
+        <h1>Welcome to My Website</h1>
+        <p>This website was created using modern HTML and CSS, and deployed directly via Vercel.</p>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="alert('Welcome!')">Get Started</button>
+            <a href="https://github.com" target="_blank" class="btn btn-secondary">Learn More</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 My Website. Built with clean code.
+    </footer>
+
 </body>
 </html>
