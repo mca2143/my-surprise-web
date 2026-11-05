@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Sweetha 🦋 | My Butterfly</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+    .font-romantic {
+      font-family: 'Alex Brush', cursive;
+    }
+    .font-script {
+      font-family: 'Dancing Script', cursive;
+    }
+
+    /* Butterfly wing flutter & flight */
+    @keyframes wingLeft {
+      0%, 100% { transform: scaleX(1) rotate(0deg); }
+      50% { transform: scaleX(0.18) rotate(-12deg); }
+    }
+    @keyframes wingRight {
+      0%, 100% { transform: scaleX(1) rotate(0deg); }
+      50% { transform: scaleX(0.18) rotate(12deg); }
+    }
+    .wing-l {
+      transform-origin: right center;
+      animation: wingLeft 0.28s ease-in-out infinite;
+    }
+    .wing-r {
+      transform-origin: left center;
+      animation: wingRight 0.28s ease-in-out infinite;
+    }
+
+    /* Floating butterflies upwards with swaying */
+    @keyframes flyDrift {
+      0% {
+        transform: translate(0, 110vh) rotate(5deg) scale(0.7);
+        opacity: 0;
+      }
+      10% { opacity: 0.9; }
+      50% {
+        transform: translate(35px, 50vh) rotate(-10deg) scale(1);
+      }
+      75% {
+        transform: translate(-25px, 25vh) rotate(12deg) scale(0.9);
+      }
+      100% {
+        transform: translate(15px, -15vh) rotate(-5deg) scale(0.8);
+        opacity: 0;
+      }
+    }
+    .drifting-butterfly {
+      position: absolute;
+      bottom: -80px;
+      animation: flyDrift 14s linear infinite;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Candle flame flicker and glow */
+    @keyframes flicker {
+      0%, 100% { transform: scale(1) rotate(-1deg); opacity: 1; filter: drop-shadow(0 0 10px #fbbf24); }
+      25% { transform: scale(1.1, 0.95) rotate(2deg); opacity: 0.95; }
+      50% { transform: scale(0.92, 1.1) rotate(-2deg); opacity: 0.88; }
+      75% { transform: scale(1.08, 1.02) rotate(1deg); opacity: 1; }
+    }
+    .flame {
+      animation: flicker 0.7s infinite ease-in-out;
+      transform-origin: bottom center;
+    }
+
+    /* Romantic glow card pulse */
+    @keyframes romanticGlow {
+      0%, 100% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.35), 0 0 65px rgba(168, 85, 247, 0.25); }
+      50% { box-shadow: 0 0 55px rgba(244, 114, 182, 0.65), 0 0 90px rgba(217, 70, 239, 0.45); }
+    }
+    .romantic-card {
+      animation: romanticGlow 4s ease-in-out infinite;
+    }
+
+    /* Envelope / box wiggle */
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1.2deg); }
+    }
+    .gentle-hover {
+      animation: gentleFloat 3.4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-[#0c0414] via-[#210936] to-[#450a3c] text-rose-50 flex flex-col justify-between items-center relative overflow-hidden select-none p-3 sm:p-6">
+
+  <!-- Butterflies and Sparkles canvas layer -->
+  <div id="butterfly-layer" class="absolute inset-0 overflow-hidden pointer-events-none z-10"></div>
+
+  <!-- Header Controls -->
+  <header class="w-full max-w-3xl flex justify-between items-center z-30 pt-1">
+    <div class="flex items-center gap-2">
+      <span class="text-2xl filter drop-shadow">🦋</span>
+      <span class="text-xs sm:text-sm font-semibold tracking-wider uppercase text-pink-300 drop-shadow">For My Sweetha</span>
+    </div>
+    
+    <div class="flex items-center gap-2">
+      <!-- Music toggle -->
+      <button id="musicToggleBtn" class="bg-pink-500/20 hover:bg-pink-500/40 backdrop-blur-md border border-pink-400/40 text-pink-200 rounded-full px-3 py-1.5 text-xs flex items-center gap-1.5 shadow-lg transition">
+        <span id="musicIcon">🎵</span>
+        <span id="musicText">Play Song</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="w-full max-w-lg my-auto relative z-20 flex flex-col items-center justify-center">
+
+    <!-- 1. STAGE ONE: ROMANTIC ENVELOPE / BUTTERFLY BOX -->
+    <section id="giftStage" class="w-full flex flex-col items-center text-center transition-all duration-500 py-4">
+      <div class="relative group cursor-pointer gentle-hover" id="openGiftTrigger">
+        
+        <!-- Glowing Halo with Butterfly wings around the gift -->
+        <div class="absolute -inset-5 bg-gradient-to-r from-pink-500 via-purple-500 to-rose-400 rounded-full blur-2xl opacity-60 group-hover:opacity-95 transition duration-500"></div>
+
+        <!-- Glowing interactive card envelope -->
+        <div class="relative w-52 h-52 sm:w-60 sm:h-60 flex items-center justify-center transform group-hover:scale-105 active:scale-95 transition duration-300">
+          <svg viewBox="0 0 240 240" class="w-full h-full drop-shadow-[0_15px_30px_rgba(244,114,182,0.4)]">
+            <!-- Envelope Body -->
+            <rect x="25" y="65" width="190" height="130" rx="16" fill="#581c87" stroke="#f472b6" stroke-width="2"/>
+            <path d="M25 68 L120 135 L215 68" fill="none" stroke="#f472b6" stroke-width="2.5"/>
+            <path d="M25 195 L95 130" stroke="#a855f7" stroke-width="2" opacity="0.6"/>
+            <path d="M215 195 L145 130" stroke="#a855f7" stroke-width="2" opacity="0.6"/>
+
+            <!-- Center Butterfly Stamp Seal -->
+            <g transform="translate(120, 130)">
+              <circle cx="0" cy="0" r="28" fill="#ec4899" stroke="#fbcfe8" stroke-width="2" filter="drop-shadow(0 0 8px rgba(244,114,182,0.8))"/>
+              <!-- Butterfly silhouette inside seal -->
+              <path class="wing-l" d="M-3,-2 C-14,-16 -24,-8 -17,7 C-12,16 -3,8 -2,1 Z" fill="#fff" opacity="0.95"/>
+              <path class="wing-r" d="M3,-2 C14,-16 24,-8 17,7 C12,16 3,8 2,1 Z" fill="#fff" opacity="0.95"/>
+              <ellipse cx="0" cy="2" rx="1.5" ry="7" fill="#fbbf24"/>
+            </g>
+
+            <!-- Little fluttering butterflies surrounding the envelope -->
+            <g transform="translate(35, 45) scale(0.65)" class="wing-l">
+              <path d="M0,0 C-12,-16 -22,-6 -14,6 Z" fill="#f472b6"/>
+              <path d="M0,0 C12,-16 22,-6 14,6 Z" fill="#f472b6"/>
+            </g>
+            <g transform="translate(205, 55) scale(0.7)" class="wing-r">
+              <path d="M0,0 C-12,-16 -22,-6 -14,6 Z" fill="#c084fc"/>
+              <path d="M0,0 C12,-16 22,-6 14,6 Z" fill="#c084fc"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="mt-5 space-y-1">
+        <span class="inline-block px-3 py-1 text-xs uppercase tracking-widest bg-pink-500/20 text-pink-300 rounded-full border border-pink-400/30">
+          🦋 Happy Birthday My Butterfly
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-200 to-amber-200 font-romantic tracking-wide pt-1">
+          Sweetha
+        </h2>
+        <p class="text-xs sm:text-sm text-pink-200/80 max-w-xs mx-auto">
+          You bring flutter and vibrant colors into my world. Touch the seal to open your surprise!
+        </p>
+      </div>
+
+      <button id="openBoxBtn" class="mt-6 px-7 py-3 rounded-full bg-gradient-to-r from-pink-500 via-purple-600 to-rose-500 text-white font-semibold text-sm shadow-[0_0_25px_rgba(236,72,153,0.6)] hover:shadow-[0_0_35px_rgba(236,72,153,0.9)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2">
+        <span>🦋</span>
+        <span>Open Birthday Surprise</span>
+        <span>✨</span>
+      </button>
+    </section>
+
+    <!-- 2. STAGE TWO: SWEETHA'S ROMANTIC BIRTHDAY CARD -->
+    <section id="cardStage" class="hidden w-full opacity-0 transform translate-y-8 flex-col items-center">
+      
+      <div class="w-full bg-slate-950/70 backdrop-blur-2xl border border-pink-500/30 rounded-3xl p-5 sm:p-7 romantic-card relative text-center overflow-hidden">
+        
+        <!-- Floating decorative corner butterflies -->
+        <span class="absolute top-3 left-4 text-xl opacity-75">🦋</span>
+        <span class="absolute top-3 right-4 text-xl opacity-75">✨</span>
+
+        <h1 class="font-romantic text-4xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-200 to-amber-200 leading-none">
+          Happy Birthday
+        </h1>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-wide mt-1 flex items-center justify-center gap-2">
+          <span>Sweetha</span>
+          <span class="text-xl">🦋</span>
+        </h2>
+        <p class="text-xs text-pink-300/80 font-medium tracking-widest uppercase mb-4">To the girl with the sweetest wings</p>
+
+        <!-- SWEETHA'S PHOTO FRAME WITH BUTTERFLY MOTIFS -->
+        <div class="relative w-40 h-40 sm:w-48 sm:h-48 mx-auto my-3">
+          
+          <!-- Outer Butterfly Decorative Ring -->
+          <div class="absolute -inset-2 rounded-full bg-gradient-to-tr from-pink-500 via-rose-400 to-purple-600 p-[3px] shadow-[0_0_25px_rgba(244,114,182,0.5)]">
+            <div class="w-full h-full rounded-full border-2 border-dashed border-pink-200/60 flex items-center justify-center"></div>
+          </div>
+
+          <!-- Main Image Frame -->
+          <div class="relative w-full h-full rounded-full overflow-hidden border-2 border-pink-300/50 shadow-inner group bg-purple-950/60">
+            <img id="sweethaPhoto" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80" alt="Sweetha Butterfly" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/4a044e/f472b6?text=Sweetha+🦋'">
+            
+            <!-- Upload Photo Overlay (For picking Sweetha's real pic) -->
+            <label for="photoUpload" class="absolute inset-0 bg-purple-950/75 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col items-center justify-center cursor-pointer text-white text-xs gap-1.5 p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span class="font-medium text-pink-200">Change Sweetha's Pic</span>
+            </label>
+            <input type="file" id="photoUpload" accept="image/*" class="hidden">
+          </div>
+
+          <!-- Little Golden Butterfly badge on photo edge -->
+          <div class="absolute -bottom-1 -right-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full p-2.5 shadow-lg border border-pink-200/50 flex items-center justify-center text-sm">
+            🦋
+          </div>
+        </div>
+
+        <!-- ROMANTIC WISH MESSAGE -->
+        <div class="bg-purple-950/40 rounded-2xl p-4 border border-pink-500/20 my-3 text-left">
+          <p class="text-pink-100 text-xs sm:text-sm leading-relaxed font-light italic">
+            "Happy Birthday to my dearest <strong class="text-pink-300 font-semibold">Sweetha</strong>! Just like a butterfly spreads warmth and grace with every flutter, you fill every ordinary second of my life with colors, joy, and peace. May every dream of yours take flight this year!"
+          </p>
+          <div class="mt-2 text-right">
+            <span class="text-xs text-rose-300 font-medium">Forever your favorite person ❤️</span>
+          </div>
+        </div>
+
+        <!-- INTERACTIVE CAKE & CANDLE SECTION -->
+        <div id="cakeContainer" class="py-2 flex flex-col items-center">
+          <div class="relative inline-block cursor-pointer" id="candleAction">
+            <!-- Candle Wick & Flame -->
+            <div id="candleFlame" class="flame text-xl -mb-1 transform transition-all duration-500">
+              🔥
+            </div>
+            <!-- Candle Stick -->
+            <div class="w-2.5 h-6 mx-auto bg-gradient-to-b from-amber-200 to-pink-400 rounded-t-sm shadow"></div>
+            <!-- Cake Base -->
+            <div class="w-24 h-9 bg-gradient-to-r from-pink-600 via-rose-500 to-purple-600 rounded-t-xl border-t border-pink-200 shadow-md flex items-center justify-center text-xs text-white">
+              🎂 Sweetha
+            </div>
+          </div>
+          <span id="candleHint" class="text-[11px] text-pink-300/80 mt-1.5 cursor-pointer hover:underline">
+            Tap the candle to blow it out & make a wish! ✨
+          </span>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="mt-4 flex flex-wrap gap-2 justify-center items-center">
+          <button id="heartShowerBtn" class="px-4 py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-medium text-xs shadow-lg hover:scale-105 active:scale-95 transition flex items-center gap-1.5">
+            <span>💖</span>
+            <span>Shower with Love</span>
+          </button>
+
+          <button id="butterflyBurstBtn" class="px-4 py-2.5 rounded-full bg-purple-600/60 hover:bg-purple-600/90 border border-purple-400/40 text-pink-100 font-medium text-xs backdrop-blur-md hover:scale-105 active:scale-95 transition flex items-center gap-1.5">
+            <span>🦋</span>
+            <span>Butterfly Burst</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Pack Back / Re-play button -->
+      <button id="reopenBoxBtn" class="mt-4 text-xs text-pink-300/70 hover:text-pink-200 underline transition underline-offset-4">
+        Close envelope & replay surprise
+      </button>
+    </section>
+
+  </main>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-6 bg-purple-950/90 border border-pink-400 text-pink-200 text-xs px-4 py-2.5 rounded-full shadow-2xl backdrop-blur-md transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+    <span id="toastIcon">🦋</span>
+    <span id="toastMsg">Sweetha's birthday surprise!</span>
+  </div>
+
+  <footer class="relative z-30 text-center py-2 text-[11px] text-pink-300/60">
+    Designed specially for Sweetha 🦋 • Happy Birthday!
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // State
+    let isPlayingMusic = false;
+    let audioCtx = null;
+    let melodyTimeout = null;
+    let isCandleBlown = false;
+
+    // Elements
+    const giftStage = document.getElementById('giftStage');
+    const cardStage = document.getElementById('cardStage');
+    const openBoxBtn = document.getElementById('openBoxBtn');
+    const openGiftTrigger = document.getElementById('openGiftTrigger');
+    const reopenBoxBtn = document.getElementById('reopenBoxBtn');
+    const photoUpload = document.getElementById('photoUpload');
+    const sweethaPhoto = document.getElementById('sweethaPhoto');
+    const heartShowerBtn = document.getElementById('heartShowerBtn');
+    const butterflyBurstBtn = document.getElementById('butterflyBurstBtn');
+    const musicToggleBtn = document.getElementById('musicToggleBtn');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicText = document.getElementById('musicText');
+    const candleAction = document.getElementById('candleAction');
+    const candleFlame = document.getElementById('candleFlame');
+    const candleHint = document.getElementById('candleHint');
+
+    // Create Drifting Butterflies on background
+    function createFlutteringButterflies() {
+      const container = document.getElementById('butterfly-layer');
+      const colors = ['#f472b6', '#ec4899', '#c084fc', '#e879f9', '#fb7185', '#fda4af'];
+
+      for (let i = 0; i < 18; i++) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'drifting-butterfly';
+        
+        const size = Math.floor(Math.random() * 22) + 24;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const left = Math.floor(Math.random() * 95);
+        const duration = Math.floor(Math.random() * 7) + 10;
+        const delay = Math.random() * 12;
+
+        wrapper.style.left = `${left}%`;
+        wrapper.style.animationDuration = `${duration}s`;
+        wrapper.style.animationDelay = `${delay}s`;
+
+        wrapper.innerHTML = `
+          <svg width="${size}" height="${size * 0.8}" viewBox="0 0 100 80" class="drop-shadow-[0_0_10px_${color}]">
+            <g transform="translate(50, 40)">
+              <!-- Left Wing -->
+              <path class="wing-l" d="M-4,-2 C-30,-36 -46,-12 -32,18 C-22,38 -6,18 -3,4 Z" fill="${color}" opacity="0.85"/>
+              <!-- Right Wing -->
+              <path class="wing-r" d="M4,-2 C30,-36 46,-12 32,18 C22,38 6,18 3,4 Z" fill="${color}" opacity="0.85"/>
+              <!-- Body -->
+              <ellipse cx="0" cy="5" rx="3" ry="14" fill="#fef08a"/>
+            </g>
+          </svg>
+        `;
+        container.appendChild(wrapper);
+      }
+    }
+
+    // Confetti & Butterfly shower
+    function triggerCelebrationBlasts() {
+      // Pink and gold confetti
+      confetti({
+        particleCount: 70,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#f472b6', '#fb7185', '#c084fc', '#fef08a']
+      });
+
+      // Side cannons
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 60,
+          origin: { x: 0, y: 0.65 },
+          colors: ['#ec4899', '#a855f7', '#fbbf24']
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 60,
+          origin: { x: 1, y: 0.65 },
+          colors: ['#f43f5e', '#d946ef', '#fbcfe8']
+        });
+      }, 300);
+    }
+
+    // Heart shower effect for Sweetha
+    function showerHearts() {
+      const heartCount = 20;
+      for (let i = 0; i < heartCount; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.innerText = ['💖', '💕', '🦋', '🌸', '✨'][Math.floor(Math.random() * 5)];
+          heart.className = 'fixed text-2xl pointer-events-none z-50 transition-all duration-1000';
+          heart.style.left = `${Math.random() * 85 + 5}%`;
+          heart.style.top = `${Math.random() * 40 + 50}%`;
+          heart.style.transform = 'scale(0.5)';
+          heart.style.opacity = '1';
+          document.body.appendChild(heart);
+
+          requestAnimationFrame(() => {
+            heart.style.transform = `scale(${Math.random() * 1.5 + 1}) translateY(-120px) rotate(${Math.random() * 40 - 20}deg)`;
+            heart.style.opacity = '0';
+          });
+
+          setTimeout(() => heart.remove(), 1000);
+        }, i * 60);
+      }
+      showToast("💕 Lots of love to Sweetha! 🦋");
+    }
+
+    // Blow candle function
+    function toggleCandle() {
+      if (!isCandleBlown) {
+        isCandleBlown = true;
+        candleFlame.innerHTML = '💨';
+        candleFlame.classList.remove('flame');
+        setTimeout(() => {
+          candleFlame.innerHTML = '✨';
+          candleHint.innerHTML = '🎉 Wish made! May all your dreams come true Sweetha!';
+          candleHint.classList.add('text-amber-300');
+          triggerCelebrationBlasts();
+          showToast('🎂 Happy Birthday Sweetha! Wish locked in!');
+        }, 400);
+      } else {
+        isCandleBlown = false;
+        candleFlame.innerHTML = '🔥';
+        candleFlame.classList.add('flame');
+        candleHint.innerHTML = 'Tap the candle to blow it out & make a wish! ✨';
+        candleHint.classList.remove('text-amber-300');
+      }
+    }
+
+    // Open Gift Transition
+    function openSurprise() {
+      playSweetChime();
+      triggerCelebrationBlasts();
+      startBirthdayTune();
+
+      giftStage.classList.add('fade-out');
+      setTimeout(() => {
+        giftStage.classList.add('hidden');
+        cardStage.classList.remove('hidden');
+        setTimeout(() => {
+          cardStage.classList.remove('opacity-0', 'translate-y-8');
+          cardStage.classList.add('transition-all', 'duration-700');
+        }, 30);
+      }, 400);
+    }
+
+    // Close & Replay
+    function closeAndReset() {
+      cardStage.classList.add('opacity-0', 'translate-y-8');
+      setTimeout(() => {
+        cardStage.classList.add('hidden');
+        giftStage.classList.remove('hidden', 'fade-out');
+      }, 400);
+    }
+
+    // Change Sweetha's Photo from local storage/device
+    photoUpload.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          sweethaPhoto.src = event.target.result;
+          showToast("🦋 Sweetha's photo updated!");
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Toast UI
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = text;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2800);
+    }
+
+    // AUDIO API - Soft Romantic "Happy Birthday" Melody
+    const NOTES = {
+      C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23,
+      G4: 392.00, A4: 440.00, B4: 493.88, C5: 523.25
+    };
+
+    const birthdayTune = [
+      { note: 'C4', dur: 0.35 }, { note: 'C4', dur: 0.25 }, { note: 'D4', dur: 0.6 },
+      { note: 'C4', dur: 0.6 }, { note: 'F4', dur: 0.6 }, { note: 'E4', dur: 1.0 },
+      { note: 'C4', dur: 0.35 }, { note: 'C4', dur: 0.25 }, { note: 'D4', dur: 0.6 },
+      { note: 'C4', dur: 0.6 }, { note: 'G4', dur: 0.6 }, { note: 'F4', dur: 1.0 },
+      { note: 'C4', dur: 0.35 }, { note: 'C4', dur: 0.25 }, { note: 'C5', dur: 0.6 },
+      { note: 'A4', dur: 0.6 }, { note: 'F4', dur: 0.6 }, { note: 'E4', dur: 0.6 },
+      { note: 'D4', dur: 1.0 }, { note: 'B4', dur: 0.35 }, { note: 'B4', dur: 0.25 },
+      { note: 'A4', dur: 0.6 }, { note: 'F4', dur: 0.6 }, { note: 'G4', dur: 0.6 },
+      { note: 'F4', dur: 1.2 }
+    ];
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(freq, duration) {
+      if (!audioCtx || !isPlayingMusic) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine'; // soft romantic sine wave
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.16, audioCtx.currentTime + 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration - 0.05);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function playSweetChime() {
+      initAudio();
+      if (!audioCtx) return;
+      [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+        setTimeout(() => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.6);
+        }, idx * 100);
+      });
+    }
+
+    function playLoop(idx = 0) {
+      if (!isPlayingMusic) return;
+      if (idx >= birthdayTune.length) {
+        melodyTimeout = setTimeout(() => playLoop(0), 1500);
+        return;
+      }
+      const item = birthdayTune[idx];
+      playTone(NOTES[item.note], item.dur);
+      melodyTimeout = setTimeout(() => {
+        playLoop(idx + 1);
+      }, item.dur * 1000 + 40);
+    }
+
+    function startBirthdayTune() {
+      initAudio();
+      isPlayingMusic = true;
+      musicIcon.innerText = "🔊";
+      musicText.innerText = "Music On";
+      clearTimeout(melodyTimeout);
+      playLoop(0);
+    }
+
+    function stopBirthdayTune() {
+      isPlayingMusic = false;
+      musicIcon.innerText = "🎵";
+      musicText.innerText = "Play Song";
+      clearTimeout(melodyTimeout);
+    }
+
+    // Event listeners
+    openBoxBtn.addEventListener('click', openSurprise);
+    openGiftTrigger.addEventListener('click', openSurprise);
+    reopenBoxBtn.addEventListener('click', closeAndReset);
+    heartShowerBtn.addEventListener('click', showerHearts);
+    butterflyBurstBtn.addEventListener('click', () => {
+      triggerCelebrationBlasts();
+      showerHearts();
+    });
+    candleAction.addEventListener('click', toggleCandle);
+    candleHint.addEventListener('click', toggleCandle);
+
+    musicToggleBtn.addEventListener('click', () => {
+      if (isPlayingMusic) {
+        stopBirthdayTune();
+      } else {
+        startBirthdayTune();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      createFlutteringButterflies();
+    });
+  </script>
+</body>
+</html>
